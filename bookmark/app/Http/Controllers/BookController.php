@@ -55,7 +55,9 @@ class BookController extends Controller
         $newBook->description = $request->description;
         $newBook->save();
 
-        return redirect('/books/create')->with(['flash-alert' => 'Your book '.$newBook->title.' was added.']);
+        return redirect('/books/create')->with([
+            'flash-alert' => 'Your book '.$newBook->title.' was added.'
+        ]);
     }
 
     /**
@@ -198,6 +200,40 @@ class BookController extends Controller
 
         return redirect('/books/'.$slug.'/edit')->with([
             'flash-alert' => 'Your changes were saved.'
+        ]);
+    }
+
+    /**
+    * Asks user to confirm they want to delete the book
+    * GET /books/{slug}/delete
+    */
+    public function delete($slug)
+    {
+        $book = Book::findBySlug($slug);
+
+        if (!$book) {
+            return redirect('/books')->with([
+                'flash-alert' => 'Book not found'
+            ]);
+        }
+
+        return view('books.delete')->with([
+            'book' => $book,
+        ]);
+    }
+
+    /**
+    * Deletes the book
+    * DELETE /books/{slug}/delete
+    */
+    public function destroy($slug)
+    {
+        $book = Book::findBySlug($slug);
+
+        $book->delete();
+
+        return redirect('/books')->with([
+            'flash-alert' => '“' . $book->title . '” was removed.'
         ]);
     }
 

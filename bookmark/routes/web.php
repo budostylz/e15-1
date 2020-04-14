@@ -30,6 +30,14 @@ Route::get('/books', 'BookController@index');
 # Show a book
 Route::get('/books/{slug?}', 'BookController@show');
 
+# DELETE
+# Show the page to confirm deletion of a book
+Route::get('/books/{slug}/delete', 'BookController@delete');
+
+# Process the deletion of a book
+Route::delete('/books/{slug}', 'BookController@destroy');
+
+
 # Misc
 Route::get('/search', 'BookController@search');
 Route::get('/list', 'BookController@list');
