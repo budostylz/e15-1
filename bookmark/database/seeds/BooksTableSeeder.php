@@ -60,11 +60,12 @@ class BooksTableSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         for ($i = 0; $i < 5; $i++) {
-            $book = new Book();
             $title = $faker->words(rand(3, 6), true);
-            $book->title = Str::title($title);
-            $book->slug = Str::slug($title, '-');
+            $slug = Str::slug($title, '-');
             
+            $book = new Book();
+            $book->title = Str::title($title);
+            $book->slug = $slug;
             $book->published_year = $faker->year;
             $book->cover_url = 'https://hes-bookmark.s3.amazonaws.com/cover-placeholder.png';
             $book->info_url = 'https://en.wikipedia.org/wiki/' . $slug;
