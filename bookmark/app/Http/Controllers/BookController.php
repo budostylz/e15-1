@@ -26,7 +26,6 @@ class BookController extends Controller
         ]);
     }
 
-
     /**
     * POST /books
     * Process the form for adding a new book
@@ -227,28 +226,12 @@ class BookController extends Controller
     {
         $book = Book::findBySlug($slug);
 
+        $book->users()->detach();
+
         $book->delete();
 
         return redirect('/books')->with([
             'flash-alert' => '“' . $book->title . '” was removed.'
         ]);
     }
-
-    /**
-     * GET /filter/{$category}/{subcategory?}
-     * Example demonstrating multiple parameters
-     * Not a feature we're actually building, so I'm commenting out
-     */
-    /*
-    public function filter($category, $subcategory = null)
-    {
-        $output = 'Here are all the books under the category '.$category;
-
-        if ($subcategory) {
-            $output .= ' and also the subcategory '.$subcategory;
-        }
-
-        return $output;
-    }
-    */
 }
