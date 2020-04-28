@@ -39,12 +39,12 @@ class BookController extends Controller
         $request->validate([
             'slug' => 'required|unique:books,slug|alpha_dash',
             'title' => 'required',
-            'author_id' => 'required',
+            //'author_id' => 'required', # Giving the option of choosing "None specified"
             'published_year' => 'required|digits:4',
             'cover_url' => 'url',
             'info_url' => 'url',
             'purchase_url' => 'required|url',
-            'description' => 'required|min:255'
+            'description' => 'required|min:100'
         ]);
 
         # Note: If validation fails, it will automatically redirect the visitor back to the form page
@@ -54,7 +54,7 @@ class BookController extends Controller
         $newBook = new Book();
         $newBook->slug = $request->slug;
         $newBook->title = $request->title;
-        $newBook->author_id = $request->author_id;
+        $newBook->author_id = $request->author_id ?? null;
         $newBook->published_year = $request->published_year;
         $newBook->cover_url = $request->cover_url;
         $newBook->info_url = $request->info_url;
@@ -62,7 +62,7 @@ class BookController extends Controller
         $newBook->description = $request->description;
         $newBook->save();
 
-        return redirect('/books/create')->with([
+        return redirect('/books/'.$request->slug)->with([
             'flash-alert' => 'Your book '.$newBook->title.' was added.'
         ]);
     }
