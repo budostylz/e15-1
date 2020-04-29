@@ -51,6 +51,7 @@ class ListTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $book = factory(Book::class)->create();
+
             $user = factory(User::class)->create();
 
             $notes = $this->faker->sentences(2, true);

@@ -20,9 +20,9 @@ class BookTest extends DuskTestCase
     public function testLoadingBookWithAuthor()
     {
         $this->browse(function (Browser $browser) {
-            $book = factory(Book::class)->state('withUser')->create();
+            $book = factory(Book::class)->create();
             
-            $user = $book->users()->first();
+            $user = factory(User::class)->create();
             
             $browser->loginAs($user->id)
                     ->visit('/books/' . $book->slug)

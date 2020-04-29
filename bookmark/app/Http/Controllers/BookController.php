@@ -7,6 +7,7 @@ use Arr;
 use Str;
 use App\Book;
 use App\Author;
+use App\Actions\Books\StoreNewBook;
 
 class BookController extends Controller
 {
@@ -50,20 +51,11 @@ class BookController extends Controller
         # Note: If validation fails, it will automatically redirect the visitor back to the form page
         # and none of the code that follows will execute.
 
-        # Add the book to the database
-        $newBook = new Book();
-        $newBook->slug = $request->slug;
-        $newBook->title = $request->title;
-        $newBook->author_id = $request->author_id ?? null;
-        $newBook->published_year = $request->published_year;
-        $newBook->cover_url = $request->cover_url;
-        $newBook->info_url = $request->info_url;
-        $newBook->purchase_url = $request->purchase_url;
-        $newBook->description = $request->description;
-        $newBook->save();
+        # Week 13 example of streamlining controllers by outsourcing the storing of the book to an action class
+        $action = new StoreNewBook((object) $request->all());
 
         return redirect('/books/'.$request->slug)->with([
-            'flash-alert' => 'Your book '.$newBook->title.' was added.'
+            'flash-alert' => 'Your book '.$action->rda['title'].' was added.'
         ]);
     }
 

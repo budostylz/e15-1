@@ -53,6 +53,8 @@ class AuthTest extends DuskTestCase
     public function testRegisteringWithExistingEmail()
     {
         $this->browse(function (Browser $browser) {
+
+            // Create a user so we can try registering with their same info
             $user = factory(User::class)->create();
 
             $browser->logout()
@@ -62,7 +64,7 @@ class AuthTest extends DuskTestCase
                     ->type('password', 'helloworld')
                     ->type('password_confirmation', 'helloworld')
                     ->click('@register-button')
-                    ->assertSee('@error-field-email')
+                    ->assertPresent('@error-field-email')
                     ->assertSee('The email has already been taken.');
         });
     }
